@@ -1,0 +1,22 @@
+ID,Tâche ID,Membre ID,Date de Rapport,Commentaire,Etat
+1,101,2,2025-02-01,La tâche de nettoyage a été accomplie avec succès,Done
+2,102,3,2025-02-03,En attente d'outils pour planter les arbres,In Progress
+3,103,4,2025-02-05,Formation supplémentaire requise pour la réparation des panneaux,Planned
+4,104,7,2025-02-07,Serveur sécurisé avec succès,Done
+5,105,15,2025-02-10,Manque d’équipement pour installation,In Progress
+6,106,10,2025-02-12,Audit effectué avec précision,Done
+7,107,13,2025-02-14,En attente de planification pour l’abri,Planned
+8,108,12,2025-02-16,Mur extérieur nettoyé et peint,Done
+9,109,16,2025-02-18,Formation pour réparer l'éolienne en cours,Planned
+10,110,8,2025-02-19,L’éclairage LED a été amélioré avec succès,Done
+11,111,3,2025-02-20,En attente de tuyaux pour l’arrosage,In Progress
+12,112,12,2025-02-22,Graffitis enlevés, mur restauré,Done
+13,113,15,2025-02-24,Aucun défaut détecté lors de l'inspection,Done
+14,114,11,2025-02-25,En attente de pièces pour réparer les fuites,In Progress
+15,115,5,2025-02-27,Aire de jeux sécurisée pour les enfants,Done
+16,116,14,2025-02-28,Autorisation en attente,Planned
+17,117,7,2025-03-01,IoT en cours de configuration,In Progress
+18,118,5,2025-03-03,Jardin collectif planté avec succès,Done
+19,119,13,2025-03-05,Réparation du trottoir en cours,Planned
+20,120,8,2025-03-06,Réseau Wi-Fi amélioré,Done
+21,121,9,2025-03-08,Site web associatif terminé,In Progress

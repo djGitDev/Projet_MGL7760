@@ -1,0 +1,22 @@
+ID,Nom de la Tâche,Type de Tâche,Description,Durée Estimée (heures),Organisation ID
+101,Arrosage,BASIC,Arroser les plantes et arbres du parc,2,1
+102,Plantation,PROFESSIONNEL,Planter de nouveaux arbres,4,1
+103,Inspection,MEDIUM,Inspecter l'état des panneaux solaires,3,2
+104,Nettoyage,BASIC,Nettoyer le parc et ramasser les déchets,1,3
+105,Installation,BASIC,Installer des équipements de recyclage,6,4
+106,Audit,PROFESSIONNEL,Effectuer un audit de recyclage,5,4
+107,Aménagement,PROFESSIONNEL,Aménager une aire de jeux,8,5
+108,Peinture,MEDIUM,Peindre les murs extérieurs du parc,3,3
+109,Recyclage,MEDIUM,Organiser les matériaux recyclables,7,2
+110,Électrification,PROFESSIONNEL,Installer des panneaux solaires,10,1
+111,Entretien,BASIC,Effectuer un entretien des équipements,4,5
+112,Construction,MEDIUM,Construire une structure de stockage,12,4
+113,Maintenance,MEDIUM,Assurer la maintenance du matériel,2,3
+114,Réparation,PROFESSIONNEL,Effectuer des réparations sur les machines,5,2
+115,Formation,BASIC,Former les bénévoles sur les tâches de recyclage,4,1
+116,Sécurisation,BASIC,Sécuriser le matériel avec des systèmes de verrouillage,6,5
+117,Installation,BASIC,Installer des capteurs IoT pour surveiller l'environnement,8,4
+118,Plantation,PROFESSIONNEL,Planter des haies autour du jardin,3,5
+119,Nettoyage,PROFESSIONNEL,Nettoyer les installations électriques et électroniques,2,3
+120,Audits,BASIC,Auditer les équipements pour s'assurer qu'ils fonctionnent bien,7,1
+121,Développement,MEDIUM,Développer un site web de gestion des tâches,10,4
