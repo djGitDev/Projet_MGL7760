@@ -27,7 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 		<sonar.organization>djgitdev</sonar.organization>
 		<sonar.projectKey>djGitDev_Projet_MGL7760</sonar.projectKey>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
