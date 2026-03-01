@@ -47,7 +47,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: target/site/jacoco/jacoco.xml
+          path: target/site/jacoco/index.html
 
   analyse:
     name: Sonar Analyze
