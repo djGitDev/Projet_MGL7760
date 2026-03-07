@@ -11,7 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.example.projet3.repository.OutilRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class OutilServiceTest {
+class OutilServiceTest {
 
     @Mock
     private OutilRepository outilRepository;
