@@ -1,6 +1,5 @@
 package com.example.projet3;
 
-import com.example.projet3.model.Organisation;
 import com.example.projet3.service.CSVService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -11,9 +10,14 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.Statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Component
 public class CSVLoader implements CommandLineRunner {
 
+        private static final Logger logger = LoggerFactory.getLogger(CSVLoader.class);
+        
         private final DataSource dataSource;
 
         private final CSVService csvService;
@@ -29,7 +33,7 @@ public class CSVLoader implements CommandLineRunner {
                 try (Connection conn = dataSource.getConnection();
                                 Statement stmt = conn.createStatement()) {
                         stmt.execute("ALTER TABLE TACHE ALTER COLUMN ID RESTART WITH 101");
-                        System.out.println("✅ ID auto-increment TACHE démarre à 101.");
+                        logger.info("ID auto-increment TACHE démarre à 101.");
                 }
                 try {
                         Path cheminOrganisations = Paths
@@ -58,7 +62,7 @@ public class CSVLoader implements CommandLineRunner {
                         csvService.importerRapports(cheminRapports);
                         csvService.importerTachesOutild(cheminTacheOutils);
                 } catch (Exception e) {
-                        System.err.println("❌ Erreur d'importation : " + e.getMessage());
+                       logger.error("Erreur d'importation", e);
                 }
         }
 }
