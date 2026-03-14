@@ -3,6 +3,7 @@ package com.example.projet3;
 import com.example.projet3.model.Organisation;
 import com.example.projet3.service.CSVService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
@@ -32,23 +33,13 @@ public class CSVLoader implements CommandLineRunner {
                         System.out.println("✅ ID auto-increment TACHE démarre à 101.");
                 }
                 try {
-                        Path cheminOrganisations = Paths
-                                        .get("C:\\Users\\user\\Desktop\\projet_3_spring_boot\\projet3\\src\\main\\resources\\data\\Organisation.csv");
-
-                        Path cheminMembres = Paths
-                                        .get("C:\\Users\\user\\Desktop\\projet_3_spring_boot\\projet3\\src\\main\\resources\\data\\members.csv");
-
-                        Path cheminTaches = Paths
-                                        .get("C:\\Users\\user\\Desktop\\projet_3_spring_boot\\projet3\\src\\main\\resources\\data\\Tâche.csv");
-
-                        Path cheminOutils = Paths
-                                        .get("C:\\Users\\user\\Desktop\\projet_3_spring_boot\\projet3\\src\\main\\resources\\data\\Outils.csv");
-                        Path cheminEvaluations = Paths
-                                        .get("C:\\Users\\user\\Desktop\\projet_3_spring_boot\\projet3\\src\\main\\resources\\data\\Evaluation_Tâches.csv");
-                        Path cheminRapports = Paths
-                                        .get("C:\\Users\\user\\Desktop\\projet_3_spring_boot\\projet3\\src\\main\\resources\\data\\Rapport_Tâches.csv");
-                        Path cheminTacheOutils = Paths
-                                        .get("C:\\Users\\user\\Desktop\\projet_3_spring_boot\\projet3\\src\\main\\resources\\data\\Outils_assignés_aux_tâches.csv");
+                        Path cheminOrganisations = Paths.get("src/main/resources/data/Organisation.csv");
+                        Path cheminMembres = Paths.get("src/main/resources/data/Members.csv");
+                        Path cheminTaches = Paths.get("src/main/resources/data/Tâche.csv");
+                        Path cheminOutils = Paths.get("src/main/resources/data/Outils.csv");
+                        Path cheminEvaluations = Paths.get("src/main/resources/data/Evaluation_Tâches.csv");
+                        Path cheminRapports = Paths.get("src/main/resources/data/Rapport_Tâches.csv");
+                        Path cheminTacheOutils = Paths.get("src/main/resources/data/Outils_assignés_aux_tâches.csv");
 
                         csvService.importerOrganisations(cheminOrganisations);
                         csvService.importerMembres(cheminMembres);
