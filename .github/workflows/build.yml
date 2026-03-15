@@ -20,10 +20,10 @@ jobs:
         id: cache-maven
         uses: actions/cache@v4
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
-                  ${{ runner.os }}-maven-
+                  ${{ runner.os }}-m2-
 
       - run: mvn clean compile
 
@@ -37,6 +37,15 @@ jobs:
         with:
           java-version: 17
           distribution: 'zulu'
+
+      - name: Cache Maven dependencies
+        id: cache-maven
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-
       - run: mvn test
 
   coverage:
@@ -49,6 +58,15 @@ jobs:
         with:
           java-version: 17
           distribution: 'zulu'
+
+      - name: Cache Maven dependencies
+        id: cache-maven
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-    
 
       - name: Run Maven verify
         run: mvn verify
@@ -70,6 +88,15 @@ jobs:
          with:
            java-version: 17
            distribution: 'zulu'
+
+       - name: Cache Maven dependencies
+         id: cache-maven
+         uses: actions/cache@v4
+         with:
+           path: ~/.m2
+           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+           restore-keys: |
+             ${{ runner.os }}-m2-    
 
        - name: Run Maven documentation generation
          run: mvn javadoc:javadoc
