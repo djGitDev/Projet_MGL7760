@@ -6,6 +6,7 @@ import com.example.projet3.repository.EvaluationTacheRepository;
 import com.example.projet3.repository.MembreRepository;
 import com.example.projet3.repository.TacheRepository;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,7 @@ public class OrganisationService {
     public Organisation getOrganisationDetails(Long organisationId) {
 
         Organisation org = organisationRepository.findById(organisationId)
-                .orElseThrow(() -> new ResponseStatusException("Organisation introuvable"));
+              .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Organisation introuvable"));
 
         long nbMembres = membreRepository.countMembresByOrganisation(organisationId);
 

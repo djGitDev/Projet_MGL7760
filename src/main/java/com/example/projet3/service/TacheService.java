@@ -8,6 +8,7 @@ import com.example.projet3.model.*;
 import com.example.projet3.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 @Service
 public class TacheService {
@@ -36,9 +37,9 @@ public class TacheService {
 
     public void ajouterOutilATache(Long tacheId, Long outilId) {
         Tache tache = tacheRepository.findById(tacheId)
-                .orElseThrow(() -> new ResponseStatusException("Tâche introuvable"));
+                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tâche introuvable"));
         Outil outil = outilRepository.findById(outilId)
-                .orElseThrow(() -> new ResponseStatusException("Outil introuvable"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Outil non trouvé"));
 
         tache.addOutil(outil);
         ;

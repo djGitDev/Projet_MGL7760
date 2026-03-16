@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.projet3.model.*;
 import com.example.projet3.repository.*;
-
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service

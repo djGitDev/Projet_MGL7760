@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 import com.example.projet3.model.Outil;
 import com.example.projet3.repository.OutilRepository;
@@ -17,7 +18,7 @@ public class OutilService {
 
     public Outil getOutilById(Long id) {
         return outilRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException("Outil non trouvé"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Outil non trouvé"));
     }
 
     // liste des outils disponnibles
