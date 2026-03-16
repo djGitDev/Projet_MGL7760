@@ -48,13 +48,14 @@ public class TacheService {
 
     public List<Outil> getOutilsPourTache(Long tacheId) {
         Tache tache = tacheRepository.findById(tacheId)
-                .orElseThrow(() -> new ResponseStatusException("Tâche introuvable"));
+              
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tâche introuvable"));
         return tache.getOutils();
     }
 
     public Tache getTacheDetails(Long tacheId) {
         return tacheRepository.findById(tacheId)
-                .orElseThrow(() -> new ResponseStatusException("Tâche non trouvée"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tâche non trouvée"));
     }
 
     public List<Tache> getTachesByOrganisation(Long organisationId) {
