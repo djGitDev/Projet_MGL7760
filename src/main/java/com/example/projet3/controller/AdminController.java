@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
@@ -48,7 +49,9 @@ public class AdminController {
         Long organisationId = membreService.getOrganisationById(membreId);
 
         if (organisationId == null) {
-            throw new RuntimeException("L'organisation associée à ce membre n'a pas été trouvée.");
+          throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "L'organisation associée à ce membre n'a pas été trouvée.");
         }
 
         logger.info("Organisation ID récupéré pour le membre {} : {}", membreId, organisationId);

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.projet3.model.*;
 import com.example.projet3.repository.*;
@@ -26,14 +27,14 @@ public class MembreService {
 
     public Membre ajouterMembre(Long organisationId, Membre membre) {
         Organisation organisation = organisationRepository.findById(organisationId)
-                .orElseThrow(() -> new RuntimeException("Organisation non trouvée"));
+                .orElseThrow(() -> new ResponseStatusException("Organisation non trouvée"));
         membre.setOrganisation(organisation);
         return membreRepository.save(membre);
     }
 
     public Membre getMembreById(Long id) {
         return membreRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Membre non trouvé"));
+                .orElseThrow(() -> new ResponseStatusException("Membre non trouvé"));
     }
 
     public Long getOrganisationById(Long idMembre) {
