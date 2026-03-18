@@ -97,4 +97,51 @@ class AuthorisationTest {
         });
     }
 
+    @Test
+    void verifierAdminThrowsExceptionForNonAdmin() {
+        long membreId = 1L;
+        Membre membre = new Membre();
+        membre.setType(TypeMembre.EMPLOYÉ);
+        when(membreService.getMembreById(membreId)).thenReturn(membre);
+
+        assertThrows(ResponseStatusException.class, () -> {
+            authorisation.verifierAdmin(membreId);
+        });
+    }
+
+    @Test
+    void verifierAdminDoesNotThrowForAdmin() {
+        long membreId = 1L;
+        Membre membre = new Membre();
+        membre.setType(TypeMembre.ADMIN);
+        when(membreService.getMembreById(membreId)).thenReturn(membre);
+
+        assertDoesNotThrow(() -> {
+            authorisation.verifierAdmin(membreId);
+        });
+    }
+
+    @Test
+    void verifierMemberThrowsExceptionForNonMember() {
+        long membreId = 1L;
+        Membre membre = new Membre();
+        membre.setType(TypeMembre.ADMIN);
+        when(membreService.getMembreById(membreId)).thenReturn(membre);
+
+        assertThrows(ResponseStatusException.class, () -> {
+            authorisation.verifierMember(membreId);
+        });
+    }
+
+    @Test
+    void verifierMemberDoesNotThrowForValidMember() {
+        long membreId = 1L;
+        Membre membre = new Membre();
+        membre.setType(TypeMembre.EMPLOYÉ);
+        when(membreService.getMembreById(membreId)).thenReturn(membre);
+
+        assertDoesNotThrow(() -> {
+            authorisation.verifierMember(membreId);
+        });
+    }
 }
