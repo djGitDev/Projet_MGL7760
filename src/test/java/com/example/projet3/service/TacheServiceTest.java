@@ -62,6 +62,13 @@ class TacheServiceTest {
     }
 
     @Test
+    void getAllTachesReturnsEmptyListWhenNoTachesExist() {
+        when(tacheRepository.findAll()).thenReturn(List.of());
+        List<Tache> result = tacheService.getAllTaches();
+        assertEquals(0, result.size());
+    }
+
+    @Test
     void testGetTachesByMembre() {
         Long membreId = 1L;
         List<Tache> taches = List.of(new Tache(), new Tache());
@@ -83,6 +90,24 @@ class TacheServiceTest {
     }
 
     @Test
+    void ajouterOutilATacheThrowsExceptionWhenTacheNotFound() {
+        Long tacheId = 1L;
+        Long outilId = 2L;
+        when(tacheRepository.findById(tacheId)).thenReturn(Optional.empty());
+        assertThrows(RuntimeException.class, () -> tacheService.ajouterOutilATache(tacheId, outilId));
+    }
+
+    @Test
+    void ajouterOutilATacheThrowsExceptionWhenOutilNotFound() {
+        Long tacheId = 1L;
+        Long outilId = 2L;
+        Tache tache = new Tache();
+        when(tacheRepository.findById(tacheId)).thenReturn(Optional.of(tache));
+        when(outilRepository.findById(outilId)).thenReturn(Optional.empty());
+        assertThrows(RuntimeException.class, () -> tacheService.ajouterOutilATache(tacheId, outilId));
+    }
+
+    @Test
     void testChangeEtat() {
         Long id = 1L;
         Tache tache = new Tache();
@@ -95,6 +120,13 @@ class TacheServiceTest {
     }
 
     @Test
+    void changeEtatThrowsExceptionWhenTacheNotFound() {
+        Long id = 1L;
+        when(tacheRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> tacheService.changeEtat(id, EtatTache.DONE));
+    }
+
+    @Test
     void testCalculateAvancementTacheSimple() {
         Long id = 1L;
         Tache tache = new Tache();
@@ -102,6 +134,13 @@ class TacheServiceTest {
         when(tacheRepository.findById(id)).thenReturn(Optional.of(tache));
         double result = tacheService.calculateAvancement(id);
         assertEquals(100.0, result);
+    }
+
+    @Test
+    void calculateAvancementThrowsExceptionWhenTacheNotFound() {
+        Long id = 1L;
+        when(tacheRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> tacheService.calculateAvancement(id));
     }
 
     @Test
