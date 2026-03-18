@@ -78,6 +78,14 @@ class TacheServiceTest {
     }
 
     @Test
+    void getTachesByMembreReturnsEmptyListWhenNoTachesExist() {
+        Long membreId = 1L;
+        when(tacheRepository.findByMembres_Id(membreId)).thenReturn(List.of());
+        List<Tache> result = tacheService.getTachesByMembre(membreId);
+        assertEquals(0, result.size());
+    }
+
+    @Test
     void testAjouterOutilATache() {
         Long tacheId = 1L;
         Long outilId = 2L;
@@ -156,6 +164,23 @@ class TacheServiceTest {
                 .thenReturn(List.of(eval1, eval2));
         int score = tacheService.calculateScore(tacheId);
         assertEquals(30, score);
+    }
+
+    @Test
+    void calculateScoreReturnsZeroWhenNoEvaluationsExist() {
+        Long tacheId = 1L;
+        Tache tache = new Tache();
+        when(tacheRepository.findById(tacheId)).thenReturn(Optional.of(tache));
+        when(evaluationTacheRepository.findByTacheId(tacheId)).thenReturn(List.of());
+        int score = tacheService.calculateScore(tacheId);
+        assertEquals(0, score);
+    }
+
+    @Test
+    void calculateScoreThrowsExceptionWhenTacheNotFound() {
+        Long tacheId = 1L;
+        when(tacheRepository.findById(tacheId)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> tacheService.calculateScore(tacheId));
     }
 
     @Test
