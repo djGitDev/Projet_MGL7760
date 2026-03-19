@@ -1,3 +1,9 @@
+[![Pipeline Ci](https://github.com/djGitDev/Projet_MGL7760/actions/workflows/build.yml/badge.svg)](https://github.com/djGitDev/Projet_MGL7760/actions/workflows/build.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=djGitDev_Projet_MGL7760&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=djGitDev_Projet_MGL7760)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=djGitDev_Projet_MGL7760&metric=bugs)](https://sonarcloud.io/summary/new_code?id=djGitDev_Projet_MGL7760)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=djGitDev_Projet_MGL7760&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=djGitDev_Projet_MGL7760)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=djGitDev_Projet_MGL7760&metric=coverage)](https://sonarcloud.io/summary/new_code?id=djGitDev_Projet_MGL7760)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=djGitDev_Projet_MGL7760&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=djGitDev_Projet_MGL7760)
 
 # Projet3_Partie_2:  Système de gestion des tâches pour les entreprises de construction
 
