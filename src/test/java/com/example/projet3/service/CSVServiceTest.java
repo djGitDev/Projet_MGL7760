@@ -2,6 +2,7 @@ package com.example.projet3.service;
 
 import com.example.projet3.model.*;
 import com.example.projet3.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
@@ -104,7 +105,7 @@ class CSVServiceTest {
                 """;
         Files.writeString(csvPath, csvContent);
         when(organisationRepository.findById(999L)).thenReturn(Optional.empty());
-        assertThrows(IllegalArgumentException.class, () -> csvService.importerMembres(csvPath));
+        assertThrows(EntityNotFoundException.class, () -> csvService.importerMembres(csvPath));
     }
 
     @Test
@@ -145,7 +146,7 @@ class CSVServiceTest {
                 """;
         Files.writeString(csvPath, csvContent);
         when(organisationRepository.findById(999L)).thenReturn(Optional.empty());
-        assertThrows(IllegalArgumentException.class, () -> csvService.importerTaches(csvPath));
+        assertThrows(EntityNotFoundException.class, () -> csvService.importerTaches(csvPath));
     }
 
     @Test
@@ -193,7 +194,7 @@ class CSVServiceTest {
                 """;
         Files.writeString(csvPath, csvContent);
         when(organisationRepository.findById(999L)).thenReturn(Optional.empty());
-        assertThrows(IllegalArgumentException.class, () -> csvService.importerOutils(csvPath));
+        assertThrows(EntityNotFoundException.class, () -> csvService.importerOutils(csvPath));
     }
 
     @Test
