@@ -428,7 +428,6 @@ class CSVServiceTest {
                 1,1
                 """;
         Files.writeString(csvPath, csvContent);
-
         Tache tache = new Tache();
         tache.setId(1L);
         tache.setOutils(null);
