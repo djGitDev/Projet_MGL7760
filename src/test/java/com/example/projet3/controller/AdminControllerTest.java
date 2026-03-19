@@ -68,7 +68,8 @@ class AdminControllerTest {
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> adminController.afficherOrganisation(membreId));
 
-        assertEquals("L'organisation associée à ce membre n'a pas été trouvée.", exception.getMessage());
+        assertEquals("404 NOT_FOUND \"L'organisation associée à ce membre n'a pas été trouvée.\"", exception.getMessage());
+
         verify(authorisation).verifierAdmin(membreId);
         verify(membreService).getOrganisationById(membreId);
     }

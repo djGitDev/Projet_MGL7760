@@ -1,15 +1,16 @@
 package com.example.projet3.controller;
 
 import com.example.projet3.model.*;
-
 import com.example.projet3.service.*;
 
 import jakarta.persistence.EntityNotFoundException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
@@ -18,48 +19,45 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private MembreService membreService;
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
-    @Autowired
-    private OrganisationService organisationService;
+    private final MembreService membreService;
+    private final OrganisationService organisationService;
+    private final AdminService adminService;
+    private final TacheService tacheService;
+    private final OutilService outilService;
+    private final Authorisation authorisation;
 
-    @Autowired
-
-    private AdminService adminService;
-    @Autowired
-
-    private TacheService tacheService;
-
-    @Autowired
-    private OutilService outilService;
-
-    @Autowired
-    private Authorisation authorisation;
-
-    // Avant chaque route une verification d'autorisation est faite si c'est
-    // autoriser seulement pour un administrateur
-
-    // Route pour afficher details d'organisation
+    public AdminController(
+            MembreService membreService,
+            OrganisationService organisationService,
+            AdminService adminService,
+            TacheService tacheService,
+            OutilService outilService,
+            Authorisation authorisation) {
+        this.membreService = membreService;
+        this.organisationService = organisationService;
+        this.adminService = adminService;
+        this.tacheService = tacheService;
+        this.outilService = outilService;
+        this.authorisation = authorisation;
+    }
 
     @GetMapping("/organisation")
     public Organisation afficherOrganisation(@RequestHeader("membreId") Long membreId) {
-        // Vérifie que le membre est un administrateur
-        authorisation.verifierAdmin(membreId); // Cette méthode va vérifier que le membre est admin
+        authorisation.verifierAdmin(membreId);
         Long organisationId = membreService.getOrganisationById(membreId);
 
         if (organisationId == null) {
-            throw new RuntimeException("L'organisation associée à ce membre n'a pas été trouvée.");
+          throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "L'organisation associée à ce membre n'a pas été trouvée.");
         }
 
-        System.out.println("Organisation ID récupéré pour le membre " + membreId + " : " + organisationId);
+        logger.info("Organisation ID récupéré pour le membre {} : {}", membreId, organisationId);
 
-        Organisation organisation = organisationService.getOrganisationDetails(organisationId);
-        return organisation;
-
+        return organisationService.getOrganisationDetails(organisationId);
     }
-
-    // Route pour rechercher un membre par ID et afficher ses infos
 
     @GetMapping("/membres/{id}")
     public ResponseEntity<Membre> afficherMembre(
@@ -69,25 +67,19 @@ public class AdminController {
             Membre membre = adminService.getMembreParId(adminId, membreId);
             return ResponseEntity.ok(membre);
         } catch (EntityNotFoundException | AccessDeniedException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // ou .notFound() selon le cas
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
-
-    // Route pour lister les tâches de l'organisation avec leurs états
 
     @GetMapping("/organisation/{organisationId}/taches")
     public List<Tache> getTachesParOrganisation(@PathVariable Long organisationId) {
         return adminService.getTachesParOrganisation(organisationId);
     }
 
-    // Route pour rechercher une tâche par ID avec ses détails et outils
-
     @GetMapping("/taches/{id}")
     public Tache getTacheAvecDetails(@PathVariable Long id) {
         return adminService.getTacheAvecDetails(id);
     }
-
-    // Route pour rechercher une tâche par ID avec ses détails et outils
 
     @GetMapping("/tache/{id}")
     public ResponseEntity<String> getTacheParId(@PathVariable Long id) {
@@ -99,43 +91,30 @@ public class AdminController {
         }
     }
 
-    // Route rechercher un outil par ID
-
     @GetMapping("/outils/{id}")
     public Outil getOutilParId(@PathVariable Long id) {
         return adminService.getOutilParId(id);
     }
-
-    // Route pour lister tous les outils disponibles
 
     @GetMapping("/outils")
     public List<Outil> getTousLesOutilsDisponibles() {
         return outilService.getOutilsDisponibles();
     }
 
-    // Route pour ajouter une sous tache a une tache(on donne id de tache parent)
-
     @PostMapping("/{parentId}/sous-taches")
-    public Tache addSous(@PathVariable Long parentId,
-            @RequestBody Tache enfant) {
+    public Tache addSous(@PathVariable Long parentId, @RequestBody Tache enfant) {
         return tacheService.ajoterSousTache(parentId, enfant);
     }
 
-    // Route pour changer l'étata d'une tache
-
     @PatchMapping("/{id}/etat")
-    public Tache updateEtat(@PathVariable Long id,
-            @RequestParam EtatTache etat) {
+    public Tache updateEtat(@PathVariable Long id, @RequestParam EtatTache etat) {
         return tacheService.changeEtat(id, etat);
     }
-
-    // Route pour retourner le score d'une tache
 
     @GetMapping("/{id}/score")
     public int score(@PathVariable Long id) {
         return tacheService.calculateScore(id);
     }
-    // Route pour retourner l'avancement d'une tache
 
     @GetMapping("/{id}/avancement")
     public ResponseEntity<Double> getAvancement(@PathVariable Long id) {
