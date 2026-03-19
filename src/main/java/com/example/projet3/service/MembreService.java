@@ -27,14 +27,17 @@ public class MembreService {
 
     public Membre ajouterMembre(Long organisationId, Membre membre) {
         Organisation organisation = organisationRepository.findById(organisationId)
-                .orElseThrow(() -> new ResponseStatusException("Organisation non trouvée"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Organisation non trouvée"
+                ));;
         membre.setOrganisation(organisation);
         return membreRepository.save(membre);
     }
 
     public Membre getMembreById(Long id) {
         return membreRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException("Membre non trouvé"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Membre non trouvé"));
     }
 
     public Long getOrganisationById(Long idMembre) {

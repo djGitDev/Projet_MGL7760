@@ -3,6 +3,7 @@ package com.example.projet3.service;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.example.projet3.model.*;
 import com.example.projet3.repository.*;
@@ -36,9 +37,9 @@ public class TacheService {
 
     public void ajouterOutilATache(Long tacheId, Long outilId) {
         Tache tache = tacheRepository.findById(tacheId)
-                .orElseThrow(() -> new ResponseStatusException("Tâche introuvable"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Tâche introuvable"));
         Outil outil = outilRepository.findById(outilId)
-                .orElseThrow(() -> new ResponseStatusException("Outil introuvable"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Outil introuvable"));
 
         tache.addOutil(outil);
         ;
@@ -47,13 +48,13 @@ public class TacheService {
 
     public List<Outil> getOutilsPourTache(Long tacheId) {
         Tache tache = tacheRepository.findById(tacheId)
-                .orElseThrow(() -> new ResponseStatusException("Tâche introuvable"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Tâche introuvable"));
         return tache.getOutils();
     }
 
     public Tache getTacheDetails(Long tacheId) {
         return tacheRepository.findById(tacheId)
-                .orElseThrow(() -> new ResponseStatusException("Tâche non trouvée"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Tâche non trouvée"));
     }
 
     public List<Tache> getTachesByOrganisation(Long organisationId) {
