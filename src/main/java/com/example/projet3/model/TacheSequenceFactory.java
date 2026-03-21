@@ -1,7 +1,5 @@
 package com.example.projet3.model;
 
-import com.example.projet3.model.Tache;
-import com.example.projet3.model.EtatTache;
 import org.springframework.stereotype.Component;
 import java.util.*;
 
