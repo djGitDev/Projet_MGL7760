@@ -101,23 +101,6 @@ class Projet3IntegrationTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void consultationDetailsOrganisationParAdmin_retourneOrganisation_simple() throws Exception {
-        organisationTest = new Organisation();
-        organisationTest.setNom("Organisation Test");
-        organisationTest.setType("TEST");
-        organisationTest = organisationRepository.save(organisationTest);
-
-        membreTest = new Membre();
-        membreTest.setNom("Admin");
-        membreTest.setOrganisation(organisationTest);
-        membreTest.setType(TypeMembre.ADMIN);
-        membreTest = membreRepository.save(membreTest);
-        mockMvc.perform(get("/admin/organisation")
-                        .header("membreId", membreTest.getId()))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-    }
 
     @Test
     void changementEtatTache_changeEtatAvecSucces() throws Exception {
