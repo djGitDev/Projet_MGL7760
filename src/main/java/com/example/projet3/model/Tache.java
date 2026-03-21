@@ -67,12 +67,8 @@ public class Tache {
 
     public Tache(String nom, int dureeEstimee) {
         this.nom = nom;
-        this.ordre = ordre;
-        this.type = type;
         this.etat = EtatTache.PLANNED;
-        this.description = description;
         this.dureeEstimee = dureeEstimee;
-        this.organisation = organisation;
     }
 
     // Getters et Setters

@@ -55,21 +55,7 @@ public class CSVService {
 
             for (CSVRecord record : csvParser) {
                 String nom = record.get("Nom de la Tâche");
-                String typeString = record.get("Type de Tâche");
-                TypeTache type = TypeTache.valueOf(typeString.toUpperCase());
-                String description = record.get("Description");
                 int dureeEstimee = Integer.parseInt(record.get("Durée Estimée (heures)"));
-                Long organisationId = Long.parseLong(record.get("Organisation ID"));
-
-                Organisation organisation = organisationRepository.findById(organisationId)
-                        .orElseThrow(() -> new EntityNotFoundException(
-                                "Organisation non trouvée avec l'ID : " + organisationId));
-
-                int ordre = Sequence.fromLibelle(nom)
-                        .map(Sequence::ordinal)
-                        .map(i -> i + 1)
-                        .orElse(0);
-
                 taches.add(new Tache(nom, dureeEstimee));
             }
         }

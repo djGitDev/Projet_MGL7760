@@ -12,7 +12,6 @@ import com.example.projet3.model.Membre;
 import com.example.projet3.model.Outil;
 import com.example.projet3.model.Tache;
 import com.example.projet3.service.MembreService;
-import com.example.projet3.service.OutilService;
 import com.example.projet3.service.TacheService;
 
 @RestController
@@ -21,12 +20,10 @@ public class MembreController {
 
     private final TacheService tacheService;
     private final MembreService membreService;
-    private final OutilService outilService;
 
-    public MembreController(TacheService tacheService, MembreService membreService, OutilService outilService) {
+    public MembreController(TacheService tacheService, MembreService membreService) {
         this.tacheService = tacheService;
         this.membreService = membreService;
-        this.outilService = outilService;
     }
 
     @GetMapping("/{id}/taches")

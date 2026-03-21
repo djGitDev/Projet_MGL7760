@@ -46,7 +46,7 @@ class TacheServiceTest {
 
         MockitoAnnotations.openMocks(this);
 
-        tacheService = new TacheService(evaluationTacheRepository);
+        tacheService = new TacheService(evaluationTacheRepository,tacheRepository,outilRepository);
 
         ReflectionTestUtils.setField(tacheService, "tacheRepository", tacheRepository);
         ReflectionTestUtils.setField(tacheService, "outilRepository", outilRepository);

@@ -59,7 +59,7 @@ public class AdminController {
         return organisationService.getOrganisationDetails(organisationId);
     }
 
-    @GetMapping("/membres/{id}")
+    @GetMapping("/membres/{membreId}")
     public ResponseEntity<Membre> afficherMembre(
             @RequestHeader("membreId") Long adminId,
             @PathVariable Long membreId) {
