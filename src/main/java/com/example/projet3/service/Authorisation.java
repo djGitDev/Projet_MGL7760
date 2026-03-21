@@ -3,8 +3,6 @@ package com.example.projet3.service;
 
 import com.example.projet3.model.Membre;
 import com.example.projet3.model.TypeMembre;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,10 +12,10 @@ import java.util.List;
 @Component
 public class Authorisation {
 
-    @Autowired
     private MembreService membreService;
 
-    public void verifierType(Long membreId, TypeMembre typeRequis) {
+    public void verifierType(Long membreId, TypeMembre typeRequis,MembreService membreService) {
+        this.membreService = membreService;
         Membre membre = membreService.getMembreById(membreId);
         // verifier si le membre existe
         if (membre == null) {
@@ -48,11 +46,11 @@ public class Authorisation {
     }
 
     public void verifierAdmin(Long membreId) {
-        verifierType(membreId, TypeMembre.ADMIN);
+        verifierType(membreId, TypeMembre.ADMIN,membreService);
     }
 
     public void verifierMember(Long membreId) {
-        verifierUnDesTypes(membreId, List.of(TypeMembre.EMPLOYÉ, TypeMembre.VOLONTAIRE));
+        verifierUnDesTypes(membreId, List.of(TypeMembre.EMPLOYE, TypeMembre.VOLONTAIRE));
 
     }
 }

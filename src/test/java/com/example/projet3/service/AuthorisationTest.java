@@ -35,7 +35,7 @@ class AuthorisationTest {
         TypeMembre typeRequis = TypeMembre.ADMIN;
         when(membreService.getMembreById(membreId)).thenReturn(null);
         assertThrows(ResponseStatusException.class, () -> {
-            authorisation.verifierType(membreId, typeRequis);
+            authorisation.verifierType(membreId, typeRequis,membreService);
         });
     }
 
@@ -44,10 +44,10 @@ class AuthorisationTest {
         long membreId = 1L;
         TypeMembre typeRequis = TypeMembre.ADMIN;
         Membre membre = new Membre();
-        membre.setType(TypeMembre.EMPLOYÉ);
+        membre.setType(TypeMembre.EMPLOYE);
         when(membreService.getMembreById(membreId)).thenReturn(membre);
         assertThrows(ResponseStatusException.class, () -> {
-            authorisation.verifierType(membreId, typeRequis);
+            authorisation.verifierType(membreId, typeRequis,membreService);
         });
     }
 
@@ -59,7 +59,7 @@ class AuthorisationTest {
         membre.setType(TypeMembre.ADMIN);
         when(membreService.getMembreById(membreId)).thenReturn(membre);
         assertDoesNotThrow(() -> {
-            authorisation.verifierType(membreId, typeRequis);
+            authorisation.verifierType(membreId, typeRequis,membreService);
         });
     }
 
@@ -77,7 +77,7 @@ class AuthorisationTest {
     void testVerifierUnDesTypesInvalidMembre() {
         long membreId = 1L;
         Membre membre = new Membre();
-        membre.setType(TypeMembre.EMPLOYÉ);
+        membre.setType(TypeMembre.EMPLOYE);
         List<TypeMembre> typeMembres = new ArrayList<>();
         when(membreService.getMembreById(membreId)).thenReturn(membre);
         assertThrows(ResponseStatusException.class, () -> {
@@ -89,8 +89,8 @@ class AuthorisationTest {
     void testVerifierUnDesTypes() {
         long membreId = 1L;
         Membre membre = new Membre();
-        membre.setType(TypeMembre.EMPLOYÉ);
-        List<TypeMembre> typeMembres = List.of(TypeMembre.EMPLOYÉ);
+        membre.setType(TypeMembre.EMPLOYE);
+        List<TypeMembre> typeMembres = List.of(TypeMembre.EMPLOYE);
         when(membreService.getMembreById(membreId)).thenReturn(membre);
         assertDoesNotThrow(() -> {
             authorisation.verifierUnDesTypes(membreId, typeMembres);

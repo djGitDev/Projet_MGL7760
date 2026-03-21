@@ -70,7 +70,7 @@ public class CSVService {
                         .map(i -> i + 1)
                         .orElse(0);
 
-                taches.add(new Tache(nom, type, description, dureeEstimee, organisation, ordre));
+                taches.add(new Tache(nom, dureeEstimee));
             }
         }
 

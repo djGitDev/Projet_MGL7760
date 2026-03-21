@@ -27,9 +27,6 @@ class MembreControllerTest {
     @Mock
     private MembreService membreService;
 
-    @Mock
-    private OutilService outilService;
-
     @InjectMocks
     private MembreController membreController;
 

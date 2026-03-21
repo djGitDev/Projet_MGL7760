@@ -13,19 +13,16 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class AdminService {
 
-    private final OrganisationRepository organisationRepository;
     private final MembreRepository membreRepository;
     private final TacheRepository tacheRepository;
     private final OutilRepository outilRepository;
     private final Authorisation authorisationService;
 
     public AdminService(
-            OrganisationRepository organisationRepository,
             MembreRepository membreRepository,
             TacheRepository tacheRepository,
             OutilRepository outilRepository,
             Authorisation authorisationService) {
-        this.organisationRepository = organisationRepository;
         this.membreRepository = membreRepository;
         this.tacheRepository = tacheRepository;
         this.outilRepository = outilRepository;

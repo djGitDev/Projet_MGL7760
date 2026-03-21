@@ -39,6 +39,7 @@ public class Tache {
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
+
     public void setEvaluations(List<EvaluationTache> evaluations) {
         this.evaluations = evaluations;
     }
@@ -64,8 +65,7 @@ public class Tache {
 
     // Constructeurs, getters et setters
 
-    public Tache(String nom, TypeTache type, String description, int dureeEstimee, Organisation organisation,
-            int ordre) {
+    public Tache(String nom, int dureeEstimee) {
         this.nom = nom;
         this.ordre = ordre;
         this.type = type;
@@ -217,11 +217,11 @@ public class Tache {
             }
             // 2) Puis remonte pour activer la suivante et/ou terminer le parent
             checkAndActivateNext();
-        } else if (nouvelEtat == EtatTache.IN_PROGRESS) {
-            // si on démarre cette tâche, mettre le parent en cours aussi
-            if (parent != null && parent.getEtat() == EtatTache.PLANNED) {
-                parent.setEtat(EtatTache.IN_PROGRESS);
-            }
+        } else if (nouvelEtat == EtatTache.IN_PROGRESS
+                && parent != null
+                && parent.getEtat() == EtatTache.PLANNED) {
+
+            parent.setEtat(EtatTache.IN_PROGRESS);
         }
     }
 
@@ -254,32 +254,36 @@ public class Tache {
 
     @Override
     public String toString() {
-        String result = "Tâche [id=" + id +
-                ", nom=" + nom +
-                ", type=" + type +
-                ", etat=" + etat +
-                ", description=" + description +
-                ", ordre=" + ordre;
+        StringBuilder result = new StringBuilder();
+
+        result.append("Tâche [id=").append(id)
+                .append(", nom=").append(nom)
+                .append(", type=").append(type)
+                .append(", etat=").append(etat)
+                .append(", description=").append(description)
+                .append(", ordre=").append(ordre);
 
         // Ajout de l'id du parent si existant
         if (parent != null) {
-            result += ", parentId=" + parent.getId();
+            result.append(", parentId=").append(parent.getId());
         }
 
         // Ajout des ids des enfants si existants
         if (enfants != null && !enfants.isEmpty()) {
-            result += ", enfantsIds=[";
+            result.append(", enfantsIds=[");
+
             for (int i = 0; i < enfants.size(); i++) {
-                result += enfants.get(i).getId();
+                result.append(enfants.get(i).getId());
                 if (i < enfants.size() - 1) {
-                    result += ", ";
+                    result.append(", ");
                 }
             }
-            result += "]";
+
+            result.append("]");
         }
 
-        result += "]";
-        return result;
+        result.append("]");
+        return result.toString();
     }
 
     public List<EvaluationTache> getEvaluations() {
