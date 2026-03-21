@@ -9,7 +9,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.projet3.model.Membre;
 import com.example.projet3.model.TypeMembre;
-import com.example.projet3.repository.MembreRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -20,8 +19,6 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 class AuthorisationTest {
 
-    @Mock
-    private MembreRepository membreRepository;
 
     @Mock
     private MembreService membreService;
@@ -101,7 +98,7 @@ class AuthorisationTest {
     void verifierAdminThrowsExceptionForNonAdmin() {
         long membreId = 1L;
         Membre membre = new Membre();
-        membre.setType(TypeMembre.EMPLOYÉ);
+        membre.setType(TypeMembre.EMPLOYE);
         when(membreService.getMembreById(membreId)).thenReturn(membre);
 
         assertThrows(ResponseStatusException.class, () -> {
@@ -137,7 +134,7 @@ class AuthorisationTest {
     void verifierMemberDoesNotThrowForValidMember() {
         long membreId = 1L;
         Membre membre = new Membre();
-        membre.setType(TypeMembre.EMPLOYÉ);
+        membre.setType(TypeMembre.EMPLOYE);
         when(membreService.getMembreById(membreId)).thenReturn(membre);
 
         assertDoesNotThrow(() -> {

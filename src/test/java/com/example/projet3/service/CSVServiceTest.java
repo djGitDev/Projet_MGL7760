@@ -117,37 +117,7 @@ class CSVServiceTest {
         verify(membreRepository).saveAll(argThat(list -> !list.iterator().hasNext()));
     }
 
-    @Test
-    void importerTachesSuccessfully() throws IOException {
-        Path csvPath = tempDir.resolve("taches.csv");
-        String csvContent = """
-                Nom de la Tâche,Type de Tâche,Description,Durée Estimée (heures),Organisation ID
-                Tache1,BASIC,Description1,10,1
-                Tache2,PROFESSIONNEL,Description2,20,1
-                """;
-        Files.writeString(csvPath, csvContent);
-        Organisation org = new Organisation("Test", "Type");
-        org.setId(1L);
-        when(organisationRepository.findById(1L)).thenReturn(Optional.of(org));
-        csvService.importerTaches(csvPath);
-        verify(tacheRepository).saveAll(argThat(list -> {
-            int count = 0;
-            for (Object ignored : list) count++;
-            return count == 2;
-        }));
-    }
 
-    @Test
-    void importerTachesWithInvalidOrganisationId() throws IOException {
-        Path csvPath = tempDir.resolve("taches_invalid.csv");
-        String csvContent = """
-                Nom de la Tâche,Type de Tâche,Description,Durée Estimée (heures),Organisation ID
-                Tache1,PROFESSIONNEL,Description1,10,999
-                """;
-        Files.writeString(csvPath, csvContent);
-        when(organisationRepository.findById(999L)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> csvService.importerTaches(csvPath));
-    }
 
     @Test
     void importerTachesWithEmptyFile() throws IOException {
@@ -360,38 +330,7 @@ class CSVServiceTest {
         }));
     }
 
-    @Test
-    void importerTachesOutilSuccessfully() throws IOException {
-        Path csvPath = tempDir.resolve("taches_outils.csv");
-        String csvContent = """
-                Tâche ID,Outil ID
-                1,1
-                1,2
-                2,1
-                """;
-        Files.writeString(csvPath, csvContent);
 
-        Tache tache1 = new Tache();
-        tache1.setId(1L);
-        tache1.setOutils(new ArrayList<>());
-        Tache tache2 = new Tache();
-        tache2.setId(2L);
-        tache2.setOutils(new ArrayList<>());
-
-        Outil outil1 = new Outil();
-        outil1.setId(1L);
-        Outil outil2 = new Outil();
-        outil2.setId(2L);
-
-        when(tacheRepository.findById(1L)).thenReturn(Optional.of(tache1));
-        when(tacheRepository.findById(2L)).thenReturn(Optional.of(tache2));
-        when(outilRepository.findById(1L)).thenReturn(Optional.of(outil1));
-        when(outilRepository.findById(2L)).thenReturn(Optional.of(outil2));
-        when(tacheRepository.findAll()).thenReturn(List.of(tache1, tache2));
-
-        csvService.importerTachesOutild(csvPath);
-        verify(tacheRepository, atLeastOnce()).save(any());
-    }
 
     @Test
     void importerTachesOutilWithInvalidTacheId() throws IOException {

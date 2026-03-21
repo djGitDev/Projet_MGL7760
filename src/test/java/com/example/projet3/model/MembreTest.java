@@ -22,10 +22,10 @@ class MembreTest {
     void parameterizedConstructorSetsFields() {
         Organisation organisation = new Organisation();
         LocalDate date = LocalDate.of(2023, 1, 1);
-        Membre membre = new Membre("Doe", "John", TypeMembre.EMPLOYÉ, organisation, date);
+        Membre membre = new Membre("Doe", "John", TypeMembre.EMPLOYE, organisation, date);
         assertEquals("Doe", membre.getNom());
         assertEquals("John", membre.getPrenom());
-        assertEquals(TypeMembre.EMPLOYÉ, membre.getType());
+        assertEquals(TypeMembre.EMPLOYE, membre.getType());
         assertEquals(organisation, membre.getOrganisation());
         assertEquals(date, membre.getDateAdhesion());
     }
