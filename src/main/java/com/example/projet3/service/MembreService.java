@@ -13,13 +13,19 @@ import com.example.projet3.repository.*;
 @Service
 
 public class MembreService {
-    @Autowired
-    private MembreRepository membreRepository;
+    private final MembreRepository membreRepository;
+    private final OrganisationRepository organisationRepository;
+    private final EvaluationTacheRepository evaluationTacheRepository;
 
     @Autowired
-    private OrganisationRepository organisationRepository;
-    @Autowired
-    private EvaluationTacheRepository evaluationTacheRepository;
+    public MembreService(MembreRepository membreRepository,
+                         OrganisationRepository organisationRepository,
+                         EvaluationTacheRepository evaluationTacheRepository) {
+        this.membreRepository = membreRepository;
+        this.organisationRepository = organisationRepository;
+        this.evaluationTacheRepository = evaluationTacheRepository;
+    }
+
 
     public int calculerScore(Long membreId) {
         return evaluationTacheRepository.sumScoreByMembreId(membreId);
@@ -30,7 +36,7 @@ public class MembreService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Organisation non trouvée"
-                ));;
+                ));
         membre.setOrganisation(organisation);
         return membreRepository.save(membre);
     }

@@ -2,7 +2,6 @@
 package com.example.projet3.service;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.example.projet3.model.*;
@@ -14,16 +13,16 @@ import org.springframework.web.server.ResponseStatusException;
 public class TacheService {
 
     private final EvaluationTacheRepository evaluationTacheRepository;
+    private final TacheRepository tacheRepository;
+    private final OutilRepository outilRepository;
 
-    @Autowired
-    private TacheRepository tacheRepository;
-
-    @Autowired
-
-    private OutilRepository outilRepository;
-
-    TacheService(EvaluationTacheRepository evaluationTacheRepository) {
+    // Constructeur pour l'injection de tous les repositories
+    public TacheService(EvaluationTacheRepository evaluationTacheRepository,
+                        TacheRepository tacheRepository,
+                        OutilRepository outilRepository) {
         this.evaluationTacheRepository = evaluationTacheRepository;
+        this.tacheRepository = tacheRepository;
+        this.outilRepository = outilRepository;
     }
 
     public List<Tache> getTachesByMembre(Long membreId) {
@@ -42,7 +41,7 @@ public class TacheService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Outil introuvable"));
 
         tache.addOutil(outil);
-        ;
+
         tacheRepository.save(tache);
     }
 
@@ -83,7 +82,11 @@ public class TacheService {
     public double calculateAvancement(Long id) {
         Tache t = getById(id);
         if (t.getEnfants().isEmpty()) {
-            return t.getEtat() == EtatTache.DONE ? 100.0 : t.getEtat() == EtatTache.IN_PROGRESS ? 50.0 : 0.0;
+            return switch (t.getEtat()) {
+                case DONE -> 100.0;
+                case IN_PROGRESS -> 50.0;
+                default -> 0.0;
+            };
         }
         return t.getEnfants().stream()
                 .mapToDouble(child -> calculateAvancement(child.getId()))

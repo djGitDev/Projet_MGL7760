@@ -59,7 +59,7 @@ public class AdminController {
         return organisationService.getOrganisationDetails(organisationId);
     }
 
-    @GetMapping("/membres/{id}")
+    @GetMapping("/membres/{membreId}")
     public ResponseEntity<Membre> afficherMembre(
             @RequestHeader("membreId") Long adminId,
             @PathVariable Long membreId) {
@@ -102,9 +102,20 @@ public class AdminController {
     }
 
     @PostMapping("/{parentId}/sous-taches")
-    public Tache addSous(@PathVariable Long parentId, @RequestBody Tache enfant) {
+    public Tache addSous(@PathVariable Long parentId, @RequestBody TacheDTO enfantDto) {
+        Tache enfant = new Tache();
+        enfant.setNom(enfantDto.getNom());
+        enfant.setDureeEstimee(enfantDto.getDureeEstimee());
+        enfant.setDescription(enfantDto.getDescription());
+
+        // si tu veux, tu peux mapper le type depuis String vers Enum
+        if (enfantDto.getType() != null) {
+            enfant.setType(Enum.valueOf(TypeTache.class, enfantDto.getType().toUpperCase()));
+        }
+
         return tacheService.ajoterSousTache(parentId, enfant);
     }
+
 
     @PatchMapping("/{id}/etat")
     public Tache updateEtat(@PathVariable Long id, @RequestParam EtatTache etat) {

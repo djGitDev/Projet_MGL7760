@@ -2,7 +2,6 @@ package com.example.projet3;
 
 import com.example.projet3.service.CSVService;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;

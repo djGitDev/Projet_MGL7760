@@ -25,7 +25,8 @@ import java.util.List;
 public class CSVService {
 
     private static final Logger logger = LoggerFactory.getLogger(CSVService.class);
-
+    private static final String TACHE_ID = "Tâche ID";
+    private static final String MSG_TACHE_INTROUVABLE = "Tâche introuvable : ";
     private final OrganisationRepository organisationRepository;
     private final MembreRepository membreRepository;
     private final TacheRepository tacheRepository;
@@ -51,26 +52,17 @@ public class CSVService {
     public void importerTaches(Path cheminFichier) throws IOException {
         List<Tache> taches = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(cheminFichier.toFile()));
-             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader())) {
+             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.builder()
+                     .setHeader()
+                     .setSkipHeaderRecord(true)
+                     .setIgnoreHeaderCase(true)
+                     .setTrim(true)
+                     .build())) {
 
-            for (CSVRecord record : csvParser) {
-                String nom = record.get("Nom de la Tâche");
-                String typeString = record.get("Type de Tâche");
-                TypeTache type = TypeTache.valueOf(typeString.toUpperCase());
-                String description = record.get("Description");
-                int dureeEstimee = Integer.parseInt(record.get("Durée Estimée (heures)"));
-                Long organisationId = Long.parseLong(record.get("Organisation ID"));
-
-                Organisation organisation = organisationRepository.findById(organisationId)
-                        .orElseThrow(() -> new EntityNotFoundException(
-                                "Organisation non trouvée avec l'ID : " + organisationId));
-
-                int ordre = Sequence.fromLibelle(nom)
-                        .map(Sequence::ordinal)
-                        .map(i -> i + 1)
-                        .orElse(0);
-
-                taches.add(new Tache(nom, type, description, dureeEstimee, organisation, ordre));
+            for (CSVRecord csvRecord : csvParser) {
+                String nom = csvRecord.get("Nom de la Tâche");
+                int dureeEstimee = Integer.parseInt(csvRecord.get("Durée Estimée (heures)"));
+                taches.add(new Tache(nom, dureeEstimee));
             }
         }
 
@@ -84,11 +76,16 @@ public class CSVService {
         try (BufferedReader reader = Files.newBufferedReader(cheminFichier);
              CSVParser csvParser = new CSVParser(
                      reader,
-                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {
+                     CSVFormat.DEFAULT.builder()
+                             .setHeader()
+                             .setSkipHeaderRecord(true)
+                             .setIgnoreHeaderCase(true)
+                             .setTrim(true)
+                             .build())) {
 
-            for (CSVRecord record : csvParser) {
-                String nom = record.get("Nom de l'Organisation");
-                String type = record.get("Type d'Organisation");
+            for (CSVRecord csvRecord : csvParser) {
+                String nom = csvRecord.get("Nom de l'Organisation");
+                String type = csvRecord.get("Type d'Organisation");
                 organisations.add(new Organisation(nom, type));
             }
         }
@@ -102,15 +99,20 @@ public class CSVService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         try (BufferedReader reader = new BufferedReader(new FileReader(cheminFichier.toFile()));
-             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader())) {
+             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.builder()
+                     .setHeader()
+                     .setSkipHeaderRecord(true)
+                     .setIgnoreHeaderCase(true)
+                     .setTrim(true)
+                     .build())) {
 
-            for (CSVRecord record : csvParser) {
-                String nom = record.get("Nom");
-                String prenom = record.get("Prénom");
-                String typeMember = record.get("Type");
+            for (CSVRecord csvRecord : csvParser) {
+                String nom = csvRecord.get("Nom");
+                String prenom = csvRecord.get("Prénom");
+                String typeMember = csvRecord.get("Type");
                 TypeMembre type = TypeMembre.valueOf(typeMember.toUpperCase());
-                Long organisationId = Long.parseLong(record.get("Organisation ID"));
-                LocalDate dateAdhesion = LocalDate.parse(record.get("Date d'adhésion"), formatter);
+                Long organisationId = Long.parseLong(csvRecord.get("Organisation ID"));
+                LocalDate dateAdhesion = LocalDate.parse(csvRecord.get("Date d'adhésion"), formatter);
 
                 Organisation organisation = organisationRepository.findById(organisationId)
                         .orElseThrow(() -> new EntityNotFoundException(
@@ -128,15 +130,20 @@ public class CSVService {
         List<Outil> outils = new ArrayList<>();
 
         try (BufferedReader reader = Files.newBufferedReader(cheminFichier);
-             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader())) {
+             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.builder()
+                     .setHeader()
+                     .setSkipHeaderRecord(true)
+                     .setIgnoreHeaderCase(true)
+                     .setTrim(true)
+                     .build())) {
 
-            for (CSVRecord record : csvParser) {
-                String nom = record.get("Nom de l'Outil");
-                String type = record.get("Type");
-                Long organisationId = Long.parseLong(record.get("Organisation ID"));
-                String disponibilite = record.get("Disponibilité");
-                String dateAchat = record.get("Date d'Achat");
-                int nombre = Integer.parseInt(record.get("Nombre d'Utilisations"));
+            for (CSVRecord csvRecord : csvParser) {
+                String nom = csvRecord.get("Nom de l'Outil");
+                String type = csvRecord.get("Type");
+                Long organisationId = Long.parseLong(csvRecord.get("Organisation ID"));
+                String disponibilite = csvRecord.get("Disponibilité");
+                String dateAchat = csvRecord.get("Date d'Achat");
+                int nombre = Integer.parseInt(csvRecord.get("Nombre d'Utilisations"));
 
                 Organisation organisation = organisationRepository.findById(organisationId)
                         .orElseThrow(() -> new EntityNotFoundException(
@@ -154,16 +161,21 @@ public class CSVService {
         List<EvaluationTache> evaluationTaches = new ArrayList<>();
 
         try (BufferedReader reader = Files.newBufferedReader(cheminFichier);
-             CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
+             CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT.builder()
+                     .setHeader()
+                     .setSkipHeaderRecord(true)
+                     .setIgnoreHeaderCase(true)
+                     .setTrim(true)
+                     .build())) {
 
-            for (CSVRecord record : parser) {
-                long tacheId = Long.parseLong(record.get("Tâche ID"));
-                long membreId = Long.parseLong(record.get("Membre ID"));
-                int score = Integer.parseInt(record.get("Score"));
-                String commentaire = record.get("Commentaire");
+            for (CSVRecord csvRecord  : parser) {
+                long tacheId = Long.parseLong(csvRecord .get(TACHE_ID));
+                long membreId = Long.parseLong(csvRecord .get("Membre ID"));
+                int score = Integer.parseInt(csvRecord .get("Score"));
+                String commentaire = csvRecord .get("Commentaire");
 
                 Tache tache = tacheRepository.findById(tacheId)
-                        .orElseThrow(() -> new EntityNotFoundException("Tâche introuvable : " + tacheId));
+                        .orElseThrow(() -> new EntityNotFoundException(MSG_TACHE_INTROUVABLE + tacheId));
                 Membre membre = membreRepository.findById(membreId)
                         .orElseThrow(() -> new EntityNotFoundException("Membre introuvable : " + membreId));
 
@@ -180,17 +192,22 @@ public class CSVService {
         List<RapportTache> rapportTaches = new ArrayList<>();
 
         try (BufferedReader reader = Files.newBufferedReader(cheminFichier);
-             CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
+             CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT.builder()
+                     .setHeader()
+                     .setSkipHeaderRecord(true)
+                     .setIgnoreHeaderCase(true)
+                     .setTrim(true)
+                     .build())) {
 
-            for (CSVRecord record : parser) {
-                long tacheId = Long.parseLong(record.get("Tâche ID"));
-                long membreId = Long.parseLong(record.get("Membre ID"));
-                LocalDate date = LocalDate.parse(record.get("Date de Rapport"));
-                String commentaire = record.get("Commentaire");
-                String etat = record.get("Etat");
+            for (CSVRecord csvRecord  : parser) {
+                long tacheId = Long.parseLong(csvRecord .get(TACHE_ID));
+                long membreId = Long.parseLong(csvRecord .get("Membre ID"));
+                LocalDate date = LocalDate.parse(csvRecord .get("Date de Rapport"));
+                String commentaire = csvRecord .get("Commentaire");
+                String etat = csvRecord .get("Etat");
 
                 Tache tache = tacheRepository.findById(tacheId)
-                        .orElseThrow(() -> new EntityNotFoundException("Tâche introuvable : " + tacheId));
+                        .orElseThrow(() -> new EntityNotFoundException(MSG_TACHE_INTROUVABLE + tacheId));
                 Membre membre = membreRepository.findById(membreId)
                         .orElseThrow(() -> new EntityNotFoundException("Membre introuvable : " + membreId));
 
@@ -205,14 +222,19 @@ public class CSVService {
 
     public void importerTachesOutild(Path cheminCSV) throws IOException {
         try (BufferedReader reader = Files.newBufferedReader(cheminCSV);
-             CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
+             CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT.builder()
+                     .setHeader()
+                     .setSkipHeaderRecord(true)
+                     .setIgnoreHeaderCase(true)
+                     .setTrim(true)
+                     .build())) {
 
-            for (CSVRecord record : parser) {
-                Long tacheId = Long.parseLong(record.get("Tâche ID"));
-                Long outilId = Long.parseLong(record.get("Outil ID"));
+            for (CSVRecord csvRecord  : parser) {
+                Long tacheId = Long.parseLong(csvRecord .get(TACHE_ID));
+                Long outilId = Long.parseLong(csvRecord .get("Outil ID"));
 
                 Tache tache = tacheRepository.findById(tacheId)
-                        .orElseThrow(() -> new EntityNotFoundException("Tâche introuvable : " + tacheId));
+                        .orElseThrow(() -> new EntityNotFoundException(MSG_TACHE_INTROUVABLE + tacheId));
                 Outil outil = outilRepository.findById(outilId)
                         .orElseThrow(() -> new EntityNotFoundException("Outil introuvable : " + outilId));
 
@@ -225,6 +247,6 @@ public class CSVService {
         }
 
         logger.info("Mise à jour des outils liés aux tâches...");
-        tacheRepository.findAll().forEach(tacheRepository::save);
+        tacheRepository.saveAll(tacheRepository.findAll());
     }
 }

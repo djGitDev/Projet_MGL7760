@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
+import com.example.projet3.repository.EvaluationTacheRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,6 +26,10 @@ class MembreServiceTest {
 
     @Mock
     MembreRepository membreRepository;
+
+    @Mock
+    EvaluationTacheRepository evaluationTacheRepository;
+
 
     @InjectMocks
     MembreService membreService;
@@ -80,4 +85,35 @@ class MembreServiceTest {
         assertEquals(membres.get(0), membre1);
     }
 
+    @Test
+    void calculerScoreReturnsCorrectValue() {
+        Long membreId = 1L;
+        int expectedScore = 85;
+        when(evaluationTacheRepository.sumScoreByMembreId(membreId)).thenReturn(expectedScore);
+
+        int actualScore = membreService.calculerScore(membreId);
+
+        assertEquals(expectedScore, actualScore);
+    }
+
+    @Test
+    void getOrganisationByIdReturnsCorrectOrganisationId() {
+        Long membreId = 1L;
+        Long expectedOrganisationId = 10L;
+        when(membreRepository.findOrganisation_IdById(membreId)).thenReturn(expectedOrganisationId);
+
+        Long actualOrganisationId = membreService.getOrganisationById(membreId);
+
+        assertEquals(expectedOrganisationId, actualOrganisationId);
+    }
+
+    @Test
+    void getOrganisationByIdReturnsNullForNonExistentMembre() {
+        Long membreId = -1L;
+        when(membreRepository.findOrganisation_IdById(membreId)).thenReturn(null);
+
+        Long actualOrganisationId = membreService.getOrganisationById(membreId);
+
+        assertEquals(null, actualOrganisationId);
+    }
 }

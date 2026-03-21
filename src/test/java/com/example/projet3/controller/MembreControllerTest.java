@@ -4,7 +4,6 @@ import com.example.projet3.model.Membre;
 import com.example.projet3.model.Outil;
 import com.example.projet3.model.Tache;
 import com.example.projet3.service.MembreService;
-import com.example.projet3.service.OutilService;
 import com.example.projet3.service.TacheService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,9 +25,6 @@ class MembreControllerTest {
 
     @Mock
     private MembreService membreService;
-
-    @Mock
-    private OutilService outilService;
 
     @InjectMocks
     private MembreController membreController;

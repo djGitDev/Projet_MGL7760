@@ -46,7 +46,7 @@ class TacheServiceTest {
 
         MockitoAnnotations.openMocks(this);
 
-        tacheService = new TacheService(evaluationTacheRepository);
+        tacheService = new TacheService(evaluationTacheRepository,tacheRepository,outilRepository);
 
         ReflectionTestUtils.setField(tacheService, "tacheRepository", tacheRepository);
         ReflectionTestUtils.setField(tacheService, "outilRepository", outilRepository);
@@ -62,12 +62,27 @@ class TacheServiceTest {
     }
 
     @Test
+    void getAllTachesReturnsEmptyListWhenNoTachesExist() {
+        when(tacheRepository.findAll()).thenReturn(List.of());
+        List<Tache> result = tacheService.getAllTaches();
+        assertEquals(0, result.size());
+    }
+
+    @Test
     void testGetTachesByMembre() {
         Long membreId = 1L;
         List<Tache> taches = List.of(new Tache(), new Tache());
         when(tacheRepository.findByMembres_Id(membreId)).thenReturn(taches);
         List<Tache> result = tacheService.getTachesByMembre(membreId);
         assertEquals(2, result.size());
+    }
+
+    @Test
+    void getTachesByMembreReturnsEmptyListWhenNoTachesExist() {
+        Long membreId = 1L;
+        when(tacheRepository.findByMembres_Id(membreId)).thenReturn(List.of());
+        List<Tache> result = tacheService.getTachesByMembre(membreId);
+        assertEquals(0, result.size());
     }
 
     @Test
@@ -83,6 +98,24 @@ class TacheServiceTest {
     }
 
     @Test
+    void ajouterOutilATacheThrowsExceptionWhenTacheNotFound() {
+        Long tacheId = 1L;
+        Long outilId = 2L;
+        when(tacheRepository.findById(tacheId)).thenReturn(Optional.empty());
+        assertThrows(RuntimeException.class, () -> tacheService.ajouterOutilATache(tacheId, outilId));
+    }
+
+    @Test
+    void ajouterOutilATacheThrowsExceptionWhenOutilNotFound() {
+        Long tacheId = 1L;
+        Long outilId = 2L;
+        Tache tache = new Tache();
+        when(tacheRepository.findById(tacheId)).thenReturn(Optional.of(tache));
+        when(outilRepository.findById(outilId)).thenReturn(Optional.empty());
+        assertThrows(RuntimeException.class, () -> tacheService.ajouterOutilATache(tacheId, outilId));
+    }
+
+    @Test
     void testChangeEtat() {
         Long id = 1L;
         Tache tache = new Tache();
@@ -95,6 +128,13 @@ class TacheServiceTest {
     }
 
     @Test
+    void changeEtatThrowsExceptionWhenTacheNotFound() {
+        Long id = 1L;
+        when(tacheRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> tacheService.changeEtat(id, EtatTache.DONE));
+    }
+
+    @Test
     void testCalculateAvancementTacheSimple() {
         Long id = 1L;
         Tache tache = new Tache();
@@ -102,6 +142,13 @@ class TacheServiceTest {
         when(tacheRepository.findById(id)).thenReturn(Optional.of(tache));
         double result = tacheService.calculateAvancement(id);
         assertEquals(100.0, result);
+    }
+
+    @Test
+    void calculateAvancementThrowsExceptionWhenTacheNotFound() {
+        Long id = 1L;
+        when(tacheRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> tacheService.calculateAvancement(id));
     }
 
     @Test
@@ -120,6 +167,23 @@ class TacheServiceTest {
     }
 
     @Test
+    void calculateScoreReturnsZeroWhenNoEvaluationsExist() {
+        Long tacheId = 1L;
+        Tache tache = new Tache();
+        when(tacheRepository.findById(tacheId)).thenReturn(Optional.of(tache));
+        when(evaluationTacheRepository.findByTacheId(tacheId)).thenReturn(List.of());
+        int score = tacheService.calculateScore(tacheId);
+        assertEquals(0, score);
+    }
+
+    @Test
+    void calculateScoreThrowsExceptionWhenTacheNotFound() {
+        Long tacheId = 1L;
+        when(tacheRepository.findById(tacheId)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> tacheService.calculateScore(tacheId));
+    }
+
+    @Test
     void testGetByIdNotFound() {
         Long id = 1L;
         when(tacheRepository.findById(id)).thenReturn(Optional.empty());
@@ -128,3 +192,4 @@ class TacheServiceTest {
         });
     }
 }
+
