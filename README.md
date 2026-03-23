@@ -105,7 +105,9 @@ Le système permet de :
 
 ![Calculer l'avancement d'une tâche.](./src/main/resources/imagesTests/afficherAvancement.jpg)
 
+## Diagramme UML
 
+![Diagramme UML](docs/diagramme-classes.png)
 
 ## Auteurs et reconnaissance
 Lamia Griou 
