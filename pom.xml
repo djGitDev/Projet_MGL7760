@@ -115,6 +115,34 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+    <groupId>de.elnarion.maven</groupId>
+    <artifactId>plantuml-generator-maven-plugin</artifactId>
+    <version>3.0.1</version>
+    <executions>
+        <execution>
+            <id>generate-class-diagram</id>
+            <phase>generate-resources</phase>
+            <goals>
+                <goal>generate</goal>
+            </goals>
+            <configuration>
+                <outputFilename>diagramme-classes.puml</outputFilename>
+                <outputDirectory>${project.build.directory}/generated-docs</outputDirectory>
+                <scanPackages>
+                    <scanPackage>com.example.projet3</scanPackage>
+                </scanPackages>
+                <addJPAAnnotations>true</addJPAAnnotations>
+                <useShortClassNames>true</useShortClassNames>
+                <useShortClassNamesInFieldsAndMethods>true</useShortClassNamesInFieldsAndMethods>
+                <hideMethods>true</hideMethods>
+                <additionalPlantUMLConfigs>
+                    <additionalPlantUMLConfig>left to right direction</additionalPlantUMLConfig>
+                </additionalPlantUMLConfigs>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
 		</plugins>
 	</build>
 
