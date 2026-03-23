@@ -47,14 +47,25 @@ Bien que ce patron ne soit pas explicitement visible dans le code, un Factory Pa
 
 Exemple : Une classe TacheFactory pourrait être utilisée pour créer des instances de différentes tâches selon le type spécifié.
 
+## Architecture
+
+Le projet suit une architecture en couches :
+
+- Controller : API REST
+- Service : logique métier
+- Repository : accès aux données
+- Model : entités JPA
+
+Cette architecture permet une bonne séparation des responsabilités.
+
 ## Installation
-Clonez le projet depuis GitLab :
+Clonez le projet depuis GitHub :
 
 bash
-git clone https://gitlab.info.uqam.ca/griou.lamia/projet3_partie_1.git
+git clone https://github.com/djGitDev/Projet_MGL7760.git
 Importez le projet dans votre IDE  (comme VScode,IntelliJ IDEA ou Eclipse).
 
-Assurez-vous que vous avez Java 11 ou supérieur installé.
+Assurez-vous que vous avez Java 17 ou supérieur installé.
 
 Si nécessaire, installez les dépendances avec Maven :
 
@@ -109,10 +120,90 @@ Le système permet de :
 
 ![Diagramme UML](docs/diagramme-classes.png)
 
-## Auteurs et reconnaissance
-Lamia Griou 
-Gatfa Azza
+## Tests
 
+Le projet contient une suite de tests automatisés :
+
+- 44 tests unitaires
+- 0 erreurs
+- 0 échecs
+
+Pour exécuter les tests :
+bash
+mvn clean test
+
+## Pipeline CI/CD
+Le projet utilise GitHub Actions pour automatiser :
+
+- Build du projet
+- Exécution des tests
+- Analyse de qualité avec SonarCloud
+- Vérification de la couverture de code
+- Génération de documentation
+
+Le pipeline est déclenché à chaque :
+- push
+- pull request
+
+## Workflow de développement
+
+1. Créer une branche (SCRUM-XX)
+2. Développer la fonctionnalité
+3. Exécuter les tests localement :
+    bash
+    mvn clean test
+4. Commit et push
+5. Vérifier le pipeline CI
+6. Créer une Pull Request
+7. Validation et merge
+
+## Auteurs et reconnaissance
+
+### Équipe TP MGL7760
+- Azza Gatfa
+- Ouedraogo Alex Ali Fulgence 
+- Mohamed djawad Abi Ayad 
+
+### Projet original
+Ce projet est basé sur un travail réalisé dans un autre cours, développé initialement par :
+- Lamia Griou
+- Azza Gatfa
+
+### Contributions (TP actuel)
+
+Dans le cadre de ce projet, l'équipe a travaillé sur :
+
+- Mise en place d’un pipeline CI complet avec GitHub Actions :
+  - Build (compilation Maven)
+  - Exécution des tests automatisés
+  - Analyse de qualité avec SonarCloud
+  - Vérification de la couverture de code
+  - Génération de rapports
+
+- Configuration des outils de qualité :
+  - Intégration de SonarCloud avec Quality Gate
+  - Configuration des linters
+  - Correction des issues détectées
+
+- Développement de la stratégie de tests :
+  - Réalisation des tests unitaires
+  - Réalisation des tests d’intégration
+  - Validation locale et dans le pipeline CI
+
+- Mise en place des contrôles locaux :
+  - Configuration du hook pré-commit en local
+  - Vérification automatique avant commit
+
+- Automatisation de la documentation :
+  - Génération automatique du diagramme UML avec PlantUML
+  - Intégration du diagramme dans le README
+
+- Amélioration de la documentation technique :
+  - README structuré avec badges
+  - Instructions d’installation
+  - Description de l’architecture
+  - Workflow de développement
+  
 ## Licence
 Ce projet est sous licence MIT.
 
