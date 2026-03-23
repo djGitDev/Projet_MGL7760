@@ -35,6 +35,15 @@ public class TacheService {
     }
 
     public void ajouterOutilATache(Long tacheId, Long outilId) {
+        if (tacheId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "L'ID de la tâche ne peut pas être nul");
+        }
+        if (tacheId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "L'ID de la tâche ne peut pas être nul");
+        }
+        if (tacheId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "L'ID de la tâche ne peut pas être nul");
+        }
         Tache tache = tacheRepository.findById(tacheId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Tâche introuvable"));
         Outil outil = outilRepository.findById(outilId)
@@ -46,12 +55,33 @@ public class TacheService {
     }
 
     public List<Outil> getOutilsPourTache(Long tacheId) {
+        if (tacheId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "L'ID de la tâche ne peut pas être nul");
+        }
+        if (tacheId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "L'ID de la tâche ne peut pas être nul");
+        }
+        if (tacheId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "L'ID de la tâche ne peut pas être nul");
+        }
         Tache tache = tacheRepository.findById(tacheId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Tâche introuvable"));
         return tache.getOutils();
     }
 
     public Tache getTacheDetails(Long tacheId) {
+        if (tacheId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "L'ID de la tâche ne peut pas être nul");
+        }
+        if (tacheId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "L'ID de la tâche ne peut pas être nul");
+        }
+        if (tacheId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "L'ID de la tâche ne peut pas être nul");
+        }
+        if (tacheId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "L'ID de la tâche ne peut pas être nul");
+        }
         return tacheRepository.findById(tacheId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Tâche non trouvée"));
     }
