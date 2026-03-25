@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);;
 
     private final MembreService membreService;
     private final OrganisationService organisationService;
