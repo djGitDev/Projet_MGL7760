@@ -2,22 +2,23 @@ package com.example.projet3.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
 import java.util.List;
 
 class TacheSequenceFactoryTest {
 
-    @Test
-    void createSequenceReturnsCorrectNumberOfTasksForProfessionalType() {
+    @ParameterizedTest
+    @CsvSource({
+            "PROFESSIONNEL, 7",
+            "NON_PROFESSIONNEL, 7",
+            "INVALID_TYPE, 7"
+    })
+    void createSequenceReturnsCorrectNumberOfTasks(String type, int expectedSize) {
         TacheSequenceFactory factory = new TacheSequenceFactory();
-        List<Tache> sequence = factory.createSequence("PROFESSIONNEL");
-        assertEquals(7, sequence.size());
-    }
-
-    @Test
-    void createSequenceReturnsCorrectNumberOfTasksForNonProfessionalType() {
-        TacheSequenceFactory factory = new TacheSequenceFactory();
-        List<Tache> sequence = factory.createSequence("NON_PROFESSIONNEL");
-        assertEquals(7, sequence.size());
+        List<Tache> sequence = factory.createSequence(type);
+        assertEquals(expectedSize, sequence.size());
     }
 
     @Test
@@ -34,10 +35,4 @@ class TacheSequenceFactoryTest {
         assertEquals(10, sequence.get(2).getDureeEstimee());
     }
 
-    @Test
-    void createSequenceHandlesInvalidTypeGracefully() {
-        TacheSequenceFactory factory = new TacheSequenceFactory();
-        List<Tache> sequence = factory.createSequence("INVALID_TYPE");
-        assertEquals(7, sequence.size());
-    }
 }

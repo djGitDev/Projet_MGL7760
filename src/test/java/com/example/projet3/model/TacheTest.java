@@ -2,8 +2,7 @@ package com.example.projet3.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import java.util.List;
-import java.util.ArrayList;
+
 
 class TacheTest {
 
