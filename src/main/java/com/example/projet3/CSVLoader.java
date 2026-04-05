@@ -4,6 +4,7 @@ import com.example.projet3.service.CSVService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.sql.DataSource;
@@ -43,6 +44,7 @@ public class CSVLoader implements CommandLineRunner {
                         Path cheminEvaluations = Paths.get("src/main/resources/data/Evaluation_Tâches.csv");
                         Path cheminRapports = Paths.get("src/main/resources/data/Rapport_Tâches.csv");
                         Path cheminTacheOutils = Paths.get("src/main/resources/data/Outils_assignés_aux_tâches.csv");
+
 
                         csvService.importerOrganisations(cheminOrganisations);
                         csvService.importerMembres(cheminMembres);
