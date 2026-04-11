@@ -157,6 +157,9 @@ Le pipeline est déclenché à chaque :
 6. Créer une Pull Request
 7. Validation et merge
 
+## Rapport d’évaluation d’impact
+Voir : docs/impact-evaluation.md
+
 ## Auteurs et reconnaissance
 
 ### Équipe TP MGL7760
