@@ -10,7 +10,7 @@ L’objectif est d’analyser comment ces outils permettent d’améliorer la qu
 
 ## 2. Outils et technologies
 
-Le projet intègre plusieurs outils DevOps :
+Le projet intègre plusieurs outils issus des pratiques DevOps :
 
 - Docker et Docker Compose pour le déploiement automatisé
 - Prometheus pour la collecte des métriques
@@ -22,97 +22,180 @@ Ces outils permettent d’assurer un déploiement cohérent et de surveiller le 
 
 ## 3. Métriques analysées
 
-Les métriques suivantes ont été utilisées pour évaluer les performances du système :
+Les métriques suivantes ont été utilisées :
 
-- **application_ready_time_seconds** : mesure le temps nécessaire pour que l’application soit prête
-- **application_started_time_seconds** : indique le temps de démarrage
-- **executor_pool_max_threads** : représente le nombre maximal de threads disponibles
-- **executor_active_threads** : indique le nombre de threads actifs
-- **up** : permet de vérifier si l’application est en fonctionnement
-
-Ces métriques fournissent des informations sur la performance, la stabilité et l’utilisation des ressources.
+- **application_ready_time_seconds** : temps pour que l’application soit prête
+- **application_started_time_seconds** : temps de démarrage
+- **executor_pool_max_threads** : nombre maximal de threads
+- **executor_active_threads / jvm_threads_live_threads** : threads actifs
+- **up** : état de l’application (1 = en ligne, 0 = hors ligne)
 
 
 
 ## 4. Tableau de bord de monitoring
 
-Le tableau de bord Grafana permet une visualisation en temps réel des métriques système et applicatives collectées par Prometheus.
+Le tableau de bord Grafana permet de visualiser les métriques en temps réel et de surveiller le comportement du système.
 
-Il permet aux développeurs de surveiller le comportement du système, de détecter les anomalies et d’analyser les performances de manière efficace.
+###  Vue globale
 
-- **Figure 1** : Tableau de bord global présentant les principales métriques du système telles que l’état de l’application, l’utilisation des threads et le temps de disponibilité.
-- **Figure 2** : Vue détaillée de la métrique *application_ready_time_seconds*, illustrant la performance de démarrage de l’application.
+![Dashboard global](screenshots/dashboard.jpeg)
 
-Ces visualisations améliorent l’observabilité du système et facilitent la détection rapide des problèmes ainsi que la prise de décision.
-
-Les graphiques montrent que l’application reste stable dans le temps et que les ressources sont utilisées de manière contrôlée.
-
-Cependant, en raison du faible volume d’activité, certaines variations de performance restent peu visibles.
-
-![Figure 1 - Tableau de bord Grafana](screenshots/dashboard.png)
-
-![Figure 2 - Temps de disponibilité de l'application](screenshots/ready-time.png)
-
-Ces métriques montrent que le système de monitoring est correctement configuré et opérationnel, même en présence d’une faible activité.
+Cette vue regroupe les principales métriques du système.
 
 
 
-## 5. Évaluation de l’impact (Avant et Après)
+## 4.1 Monitoring avancé et alertes
 
-| Aspect                  | Avant implémentation | Après implémentation |
-|------------------------|---------------------|----------------------|
-| Déploiement            | Manuel              | Automatisé avec Docker |
-| Monitoring             | Non disponible      | Temps réel avec Grafana |
-| Détection d’erreurs    | Difficile           | Plus rapide et efficace |
-| Visibilité du système  | Limitée             | Élevée |
+###  Nombre d’erreurs 404
 
-Ces résultats montrent une amélioration significative de la qualité du processus de développement. 
+![Erreurs 404](screenshots/errors-404.jpeg)
 
-L’automatisation du déploiement réduit les risques d’erreurs humaines, tandis que le monitoring en temps réel améliore la réactivité face aux incidents.
+- La courbe verte représente le nombre d’erreurs
+- La ligne rouge verticale indique le déclenchement de l’alerte (seuil > 15 erreurs/sec)
+- La ligne verte pointillée indique la fin de l’alerte
+
+ Permet de détecter rapidement des anomalies
+
+
+
+###  État de l’application
+
+![Etat application](screenshots/app-status.jpeg)
+
+- Valeur **1** → application en ligne  
+- Valeur **0** → application hors ligne  
+
+Alertes :
+- Ligne jaune → détection du problème
+- Ligne rouge → alerte déclenchée
+- Icône cœur → état global du système
+
+
+
+###  Nombre de requêtes par seconde
+
+![Requêtes](screenshots/requests.jpeg)
+
+- Montre le trafic du système
+- Permet d’analyser la charge
+
+Le nombre de requêtes augmente lors de la simulation, ce qui montre la capacité du système à gérer une charge variable.
+
+###  Temps moyen de réponse
+
+![Temps réponse](screenshots/response-time.jpeg)
+
+- Mesure la performance des requêtes
+- Permet d’identifier les ralentissements
+
+
+###  Nombre de threads actifs
+
+![Threads](screenshots/threads.jpeg)
+
+- Indique l’utilisation des ressources
+- Permet de détecter une surcharge
+
+Le nombre de threads actifs permet de comprendre l’utilisation interne des ressources et d’identifier une éventuelle surcharge.
+
+### Taux d’utilisation du CPU
+
+![CPU usage](screenshots/cpu-usage.jpeg)
+
+- Représente l’utilisation du processeur par l’application
+- Permet d’analyser la consommation des ressources système
+- Une variation peut indiquer une charge ou une activité particulière du système
+
+On observe une variation du taux d’utilisation du CPU, ce qui reflète l’activité du système et la simulation de charge effectuée.
+
+###  Top Endpoints
+
+![Top endpoints](screenshots/top-endpoints.jpeg)
+
+- Montre les routes API les plus utilisées
+- Exemple : `/member/1`, `/api/outils`
+
+Utile pour analyser l’usage de l’application
+
+###  Vue globale des alertes
+
+![Alertes](screenshots/alerts.jpeg)
+
+- Permet de voir l’état global des alertes
+- Ici : aucune alerte active
+
+
+###  Simulation de charge
+
+![Augmentation erreurs](screenshots/errors-increase.jpeg)
+
+- Simulation de requêtes (spam)
+- Augmentation progressive des erreurs
+
+![Alerte déclenchée](screenshots/alert-triggered.jpeg)
+
+- L’alerte est déclenchée lorsque le seuil est dépassé
+
+Cela montre que le système de monitoring fonctionne correctement
+
+
+
+## 5. Évaluation de l’impact
+
+| Aspect                  | Avant | Après |
+|------------------------|------|------|
+| Déploiement            | Manuel | Automatisé |
+| Monitoring             | Aucun | Temps réel |
+| Détection d’erreurs    | Difficile | Rapide |
+| Visibilité             | Faible | Élevée |
+| Réactivité             | Lente | Immédiate |
+
 
 ## 6. Analyse
 
-L’intégration des outils de déploiement et de monitoring a permis d’améliorer significativement l’observabilité du système.
+L’intégration de Docker, Prometheus et Grafana a permis :
 
-Les développeurs peuvent désormais suivre le comportement de l’application en temps réel, ce qui facilite la détection des anomalies et l’analyse des performances.
+- Une meilleure observabilité du système
+- Une détection rapide des anomalies
+- Une analyse en temps réel des performances
+- Une automatisation du déploiement
 
-Le déploiement automatisé réduit les erreurs humaines et garantit une meilleure cohérence entre les environnements.
+Les alertes permettent une réaction proactive aux incidents.
 
-Même si l’activité du système est actuellement faible, l’infrastructure de monitoring est correctement configurée et pleinement fonctionnelle.
+Les métriques collectées et les alertes mises en place permettent non seulement de détecter les anomalies, mais aussi d’anticiper les problèmes avant qu’ils n’impactent les utilisateurs.
 
-Ces résultats confirment que l’intégration des outils DevOps améliore non seulement la surveillance mais aussi la qualité globale du cycle de développement logiciel.
+## 7. Coûts et bénéfices
+
+### Coûts
+- Temps de configuration
+- Complexité initiale
+
+### Bénéfices
+- Fiabilité améliorée
+- Gain de temps
+- Monitoring en temps réel
+- Meilleure prise de décision
+
+Le retour sur investissement est élevé
 
 
-
-## 7. Analyse coûts et bénéfices
-
-La mise en place de ces outils nécessite un effort initial en termes de configuration et de temps.
-
-Cependant, les bénéfices sont importants :
-
-- Amélioration de la fiabilité du système
-- Détection plus rapide des problèmes
-- Meilleure visibilité sur les performances
-- Gain de temps dans le processus de développement
-
-Ainsi, le retour sur investissement est jugé élevé.
-
-Ces bénéfices démontrent l’importance des pratiques DevOps dans l’amélioration continue des systèmes logiciels.
 
 ## 8. Limites
 
-Une des limites de cette évaluation est le faible volume d’activité du système, ce qui réduit la visibilité de certaines variations de performance.
+- Faible volume de données
+- Simulation artificielle des charges
 
-Cependant, le système de monitoring est opérationnel et prêt à être utilisé dans un contexte réel.
+Cependant, l’infrastructure est prête pour un usage réel.
 
 
 
 ## 9. Conclusion
 
-L’intégration des outils Docker, Prometheus et Grafana a permis d’améliorer significativement la qualité globale du système.
+L’intégration des outils DevOps a considérablement amélioré la qualité du système.
 
-Ces outils offrent une meilleure visibilité, facilitent l’analyse des performances et rendent le processus de déploiement plus efficace.
+Le monitoring permet :
+- une meilleure visibilité
+- une détection rapide des problèmes
+- une amélioration des performances
 
-Ils contribuent ainsi à une amélioration globale de la qualité logicielle et de la maintenabilité du système.
-
-Ce type d’infrastructure est essentiel dans des environnements de production modernes où la disponibilité et la performance sont critiques.
+Le système est désormais robuste, observable et maintenable.
