@@ -170,7 +170,7 @@ jobs:
 
   image_docker:
     runs-on: ubuntu-latest
-    needs: analyse
+    needs: test
 
     steps:
       - name: Checkout repository
