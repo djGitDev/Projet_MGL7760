@@ -23,6 +23,11 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_SECURITY_ADMIN_USER=admin
+   volumes:
+      - grafana-storage:/var/lib/grafana
     restart: unless-stopped
     depends_on:
       - prometheus
+volumes:
+  grafana-storage:
+      
