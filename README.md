@@ -206,6 +206,82 @@ Dans le cadre de ce projet, l'équipe a travaillé sur :
   - Instructions d’installation
   - Description de l’architecture
   - Workflow de développement
+
+## Déploiement
+
+Le déploiement de l’application est automatisé à l’aide d’un pipeline CI/CD GitHub Actions basé sur un runner self-hosted.
+
+### Déploiement via runner self-hosted (CI/CD)
+
+#### Prérequis
+
+Avant de pouvoir exécuter le déploiement, il est nécessaire d’avoir :
+
+\- `Docker` installé sur la machine cible
+\- `Docker Compose` installé
+\- `Git` installé
+\- Accès au repository GitHub
+\- Un `runner self-hosted` GitHub Actions configuré sur la machine de déploiement
+\- Connexion Internet pour télécharger les `images Docker` (Docker Hub et GitHub)
+
+#### Configuration du runner self-hosted
+
+Le `runner self-hosted` est un écouteur qui permet d’exécuter les instructions d'une tâche  du pipeline CI/CD directement sur une machine locale ou un serveur. Il doit être configuré une première fois avant de pouvoir recevoir les instructions de GitHub Actions.
+
+#### Accès à la configuration
+
+Tous les instructions de la configuration nécessaires pour installer et configurer le self-hosted runner sur la machine cible sont disponibles  depuis GitHub dans la section suivante :
+
+`Settings → Actions → Runners → new self-hosted runner`
+
+
+
+La commande de lancement du runner doit être exécutée avec des privilèges administrateur.
+
+```powershell
+./run.cmd
+```
+
+```bash
+./run.sh  
+```
+
+
+
+#### Exemple d'exécution du self-hosted runner en local sur windows (compatible aussi sur linux et macOS)
+
+![image-20260425194055839](C:\Users\djmai\AppData\Roaming\Typora\typora-user-images\image-20260425194055839.png)
+
+#### Configuration du pipeline CI/CD
+
+Pour que le pipeline utilise le runner self-hosted, il faut préciser dans le fichier GitHub Actions que les jobs doivent s’exécuter sur ce type de runner :
+
+```yaml
+runs-on: self-hosted
+```
+
+#### Principe de fonctionnement
+
+Lorsqu’un changement est poussé sur le repository (par exemple sur la branche main), le pipeline CI/CD est automatiquement déclenché.
+
+GitHub envoie alors les instructions au runner self-hosted, qui doit être préalablement lancé et en écoute.
+
+Le runner exécute directement les étapes de déploiement sur la machine où il est installé.
+
+#### Étapes exécutées par le pipeline
+
+\- récupération du code source depuis GitHub
+\- construction de l’image Docker de l’application via le Dockerfile
+\- récupération des images Docker de Prometheus et Grafana depiuis docker hub 
+\- création, configuration du réseau Docker en local et lancement des conteneurs
+
+On peut exécuter notre application manuellement avec les commandes  :
+
+```bash
+docker-compose -f docker-compose.yml pull      # Récupère les dernieres  images Docker (Prometheus, Grafana et Application) depuis Docker Hub  
+docker-compose -f docker-compose.yml up -d     # Crée et démarre tous les conteneurs 
+docker-compose -f docker-compose.yml ps        # Affiche l’état des conteneurs 
+```
   
 ## Licence
 Ce projet est sous licence MIT.
