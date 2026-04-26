@@ -250,7 +250,7 @@ La commande de lancement du runner doit être exécutée avec des privilèges ad
 
 #### Exemple d'exécution du self-hosted runner en local sur windows (compatible aussi sur linux et macOS)
 
-![image-20260425194055839](C:\Users\djmai\AppData\Roaming\Typora\typora-user-images\image-20260425194055839.png)
+![image-20260425194055839](src/main/resources/imagesTests/self-hosted_runner.png)
 
 #### Configuration du pipeline CI/CD
 
