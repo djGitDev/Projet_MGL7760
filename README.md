@@ -239,11 +239,11 @@ Tous les instructions de la configuration nécessaires pour installer et configu
 La commande de lancement du runner doit être exécutée avec des privilèges administrateur.
 
 ```powershell
-./run.cmd
+./run.cmd   #exécution sous windows
 ```
 
 ```bash
-./run.sh  
+./run.sh    #exécution sous linux 
 ```
 
 
